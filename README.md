@@ -2,6 +2,8 @@
 
 An IT shop for EPSI students
 
+Vincentas ZEMAITIS
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
