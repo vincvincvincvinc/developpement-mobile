@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../bo/cart.dart';
+import '../page/payment_page.dart';
+
+
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
@@ -15,16 +19,32 @@ class CartPage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        //Si j'ai plus de 0 éléments dans le panier j'affiche la liste
-        //des éléments dans le panier
-        //Sinon j'affiche le Widget EmptyCart qui affiche "Votre Panier est vide"
-        child: context.watch<Cart>().items.isNotEmpty
-            ? const ListCart()
-            : const EmptyCart(),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Votre panier total est de"),
+                Text(context.watch<Cart>().priceTotalInEuro()),
+              ],
+            ),
+            // New button
+            ElevatedButton(
+              onPressed: () {
+                if (context.read<Cart>().items.isNotEmpty) {
+                  // naviguer à la page de paiment
+                  context.go('/payment');
+                }
+              },
+              child: Text("Procéder au paiement"),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+
 
 class EmptyCart extends StatelessWidget {
   const EmptyCart({
@@ -63,8 +83,6 @@ class ListCart extends StatelessWidget {
                     Text(cart.priceTotalInEuro())
                   ],
                 ),
-                //Ajouter la ligne de total (Row Votre panier total est de)
-                //Avec le montant
                 Flexible(
                   child: ListView.builder(
                       itemCount: cart.items.length,
